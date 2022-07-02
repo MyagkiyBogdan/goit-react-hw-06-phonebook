@@ -1,11 +1,13 @@
 import styles from './ContactForm.module.css';
-
+import { addContact } from 'redux/itemsSlice';
+import { useDispatch } from 'react-redux';
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
-function ContactForm({ onSubmit }) {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
 
   const handleChange = event => {
     switch (event.currentTarget.name) {
@@ -22,10 +24,9 @@ function ContactForm({ onSubmit }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const contactData = { name: name, number: number };
-    // приходит из пропсов формы из компонента App - по факту мы вызываем функцию addContact(куда передаем данные state формы)
+    const contactData = { id: nanoid(), name, number };
 
-    onSubmit(contactData);
+    dispatch(addContact(contactData));
     setName('');
     setNumber('');
   };
@@ -68,9 +69,5 @@ function ContactForm({ onSubmit }) {
     </form>
   );
 }
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
 
 export default ContactForm;
