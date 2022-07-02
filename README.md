@@ -1,1 +1,1 @@
-# React phonebook with hooks
+# React phonebook with hooks and Redux
