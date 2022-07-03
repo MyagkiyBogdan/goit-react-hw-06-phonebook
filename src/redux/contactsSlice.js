@@ -8,7 +8,9 @@ const INITIAL_STATE = [
 ];
 
 const initialState = {
-  items: INITIAL_STATE,
+  items: JSON.parse(localStorage.getItem('contactsPersistor')) ?? [
+    ...INITIAL_STATE,
+  ],
   filter: '',
 };
 
@@ -21,7 +23,7 @@ export const contactsSlice = createSlice({
     addContact(state, action) {
       // For deal array of contacts in lower case
 
-      const allContacts = state.reduce((acc, contact) => {
+      const allContacts = state.items.reduce((acc, contact) => {
         acc.push(contact.name.toLocaleLowerCase());
         return acc;
       }, []);
@@ -38,22 +40,18 @@ export const contactsSlice = createSlice({
     },
 
     deleteContact(state, action) {
-      console.log(state.items);
-      console.log(action);
       return state.items.filter(contact => contact.id !== action.payload);
     },
     updateFilter(state, action) {
-      return action.payload;
+      return (state.filter = action.payload);
     },
   },
 });
 
-export const getContacts = state => state.contacts.items;
 export const { addContact, deleteContact, updateFilter } =
   contactsSlice.actions;
-
+// Что бы при изменении внешенго вида стетай или свойст не приходилось руками менять в каждом файле
+export const getContacts = state => state.contacts.items;
 export const getFilter = state => state.contacts.filter;
 
-// Что бы при изменении внешенго вида стетай или свойст не приходилось руками менять в каждом файле
-
-// itemsSlice.actions и itemsSlice.reducer возвращает сам медот createSlice
+// contactsSlice.actions и contactsSlice.reducer возвращает сам медот createSlice
