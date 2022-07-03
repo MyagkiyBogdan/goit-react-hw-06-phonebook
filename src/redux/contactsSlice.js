@@ -7,11 +7,16 @@ const INITIAL_STATE = [
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 ];
 
-export const itemsSlice = createSlice({
-  name: 'items',
-  initialState: JSON.parse(localStorage.getItem('contacts')) ?? [
-    ...INITIAL_STATE,
-  ],
+const initialState = {
+  items: INITIAL_STATE,
+  filter: '',
+};
+
+export const contactsSlice = createSlice({
+  name: 'contacts',
+  // initialState: JSON.parse(localStorage.getItem('contacts')) ?? [
+  // 	...INITIAL_STATE,
+  initialState,
   reducers: {
     addContact(state, action) {
       // For deal array of contacts in lower case
@@ -33,13 +38,22 @@ export const itemsSlice = createSlice({
     },
 
     deleteContact(state, action) {
-      return state.filter(contact => contact.id !== action.payload);
+      console.log(state.items);
+      console.log(action);
+      return state.items.filter(contact => contact.id !== action.payload);
+    },
+    updateFilter(state, action) {
+      return action.payload;
     },
   },
 });
 
+export const getContacts = state => state.contacts.items;
+export const { addContact, deleteContact, updateFilter } =
+  contactsSlice.actions;
+
+export const getFilter = state => state.contacts.filter;
+
 // Что бы при изменении внешенго вида стетай или свойст не приходилось руками менять в каждом файле
-export const getContacts = state => state.items;
-export const { addContact, deleteContact } = itemsSlice.actions;
 
 // itemsSlice.actions и itemsSlice.reducer возвращает сам медот createSlice
