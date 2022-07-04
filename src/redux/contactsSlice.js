@@ -8,21 +8,17 @@ const INITIAL_STATE = [
 ];
 
 const initialState = {
-  items: JSON.parse(localStorage.getItem('contactsPersistor')) ?? [
-    ...INITIAL_STATE,
-  ],
+  items: INITIAL_STATE,
   filter: '',
 };
 
 export const contactsSlice = createSlice({
   name: 'contacts',
-  // initialState: JSON.parse(localStorage.getItem('contacts')) ?? [
-  // 	...INITIAL_STATE,
+
   initialState,
   reducers: {
     addContact(state, action) {
       // For deal array of contacts in lower case
-
       const allContacts = state.items.reduce((acc, contact) => {
         acc.push(contact.name.toLocaleLowerCase());
         return acc;
@@ -36,14 +32,18 @@ export const contactsSlice = createSlice({
       }
 
       const newContact = action.payload;
-      return [...state, newContact];
+      console.log('newContact', newContact);
+      console.log('state.items', state.items);
+      state.items = [...state.items, newContact];
     },
 
     deleteContact(state, action) {
-      return state.items.filter(contact => contact.id !== action.payload);
+      state.items = state.items.filter(
+        contact => contact.id !== action.payload
+      );
     },
     updateFilter(state, action) {
-      return (state.filter = action.payload);
+      state.filter = action.payload;
     },
   },
 });
