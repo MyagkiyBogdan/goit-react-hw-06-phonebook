@@ -18,22 +18,7 @@ export const contactsSlice = createSlice({
   initialState,
   reducers: {
     addContact(state, action) {
-      // For deal array of contacts in lower case
-      const allContacts = state.items.reduce((acc, contact) => {
-        acc.push(contact.name.toLocaleLowerCase());
-        return acc;
-      }, []);
-
-      // Check if the contact is already in the contact list
-      if (allContacts.includes(action.payload.name.toLocaleLowerCase())) {
-        alert(`${action.payload.name} already in contacts.`);
-
-        return state;
-      }
-
       const newContact = action.payload;
-      console.log('newContact', newContact);
-      console.log('state.items', state.items);
       state.items = [...state.items, newContact];
     },
 
